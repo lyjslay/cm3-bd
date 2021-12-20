@@ -1,7 +1,7 @@
 #include <DS_CM3.h>
 #include "main.h"
 
-//×î´ó2^32ms = 4294967s = 71582min = 1193h = 49.7day
+
 volatile uint32_t systicks;
 uint32_t led;
 uint8_t recv_byte;
@@ -13,11 +13,11 @@ void delay_ms(uint32_t ms){
 	while(systicks - now < ms);
 }
 void UART0Handler(){
-	//ÏÈÅÐ¶ÏÊÇ½ÓÊÕÖÐ¶Ï»¹ÊÇ·¢ËÍÖÐ¶Ï
-	if(UART_Rx_FIFO_Valid_Data == 1){//Rx FIFOÓÐÊý¾Ý,½ÓÊÕÖÐ¶Ï
+	//å…ˆåˆ¤æ–­æ˜¯æŽ¥æ”¶ä¸­æ–­è¿˜æ˜¯å‘é€ä¸­æ–­
+	if(UART_Rx_FIFO_Valid_Data == 1){//Rx FIFOæœ‰æ•°æ®,æŽ¥æ”¶ä¸­æ–­
 		PA = 0x0f;
 	}
-	else if(UART_Tx_FIFO_Empty == 1){//Tx FIFO¿Õ,·¢ËÍÖÐ¶Ï
+	else if(UART_Tx_FIFO_Empty == 1){//Tx FIFOç©º,å‘é€ä¸­æ–­
 		PA = 0xf0;
 	}
 	else{
@@ -30,17 +30,16 @@ void UART0Handler(){
 int main(void){
 	NVIC_EnableIRQ(SysTick_IRQn);
 	NVIC_EnableIRQ(UART0_IRQn);
-	SysTick_Config( SystemCoreClock / 500 );//1msÖÐ¶ÏÒ»´Î
-	//±ØÐë×îºó¿ªÖÐ¶Ï,·ñÔòRST±êÖ¾Î»ÎÞ·¨ÇåÁã,»áÒ»Ö±¸´Î»
-	*(uint32_t *)(UART0_BASE_ADDR + UART_CTRL) = UART_Rx_FIFO_RST;//Çå¿Õ½ÓÊÕFIFO
-	*(uint32_t *)(UART0_BASE_ADDR + UART_CTRL) = UART_Tx_FIFO_RST;//Çå¿Õ·¢ËÍFIFO
-	*(uint32_t *)(UART0_BASE_ADDR + UART_CTRL) = UART_INT_EN;//Ê¹ÄÜ´®¿ÚÖÐ¶Ï
+	SysTick_Config( SystemCoreClock / 500 );//1msä¸­æ–­ä¸€æ¬¡
+	*(uint32_t *)(UART0_BASE_ADDR + UART_CTRL) = UART_Rx_FIFO_RST;
+	*(uint32_t *)(UART0_BASE_ADDR + UART_CTRL) = UART_Tx_FIFO_RST;
+	*(uint32_t *)(UART0_BASE_ADDR + UART_CTRL) = UART_INT_EN;
 	PA = 0xaa;
 	while(1){
-		if(UART_Rx_FIFO_Valid_Data == 1){//Rx FIFOÓÐÊý¾Ý
-			recv_byte = (*(uint32_t *)(UART0_BASE_ADDR + UART_Rx_FIFO)) & 0x000000ff;//½ÓÊÕFIFOµÄµÍ°ËÎ»¸³¸ørecv_byte
-			if(UART_Tx_FIFO_Full == 0){//Tx FIFOÃ»Âú
-				if(UART_Frame_Error == 1){//¸Õ¶Áµ½µÄÒ»¸öbyteÓÐÖ¡´íÎó
+		if(UART_Rx_FIFO_Valid_Data == 1){
+			recv_byte = (*(uint32_t *)(UART0_BASE_ADDR + UART_Rx_FIFO)) & 0x000000ff;
+			if(UART_Tx_FIFO_Full == 0){
+				if(UART_Frame_Error == 1){
 					continue;
 				}
 				else{
@@ -54,14 +53,6 @@ int main(void){
 		}
 		else{
 			continue;
-		}
-		
-		
-//		*(uint32_t *)(GPIOA_BASE_ADDR + GPIO_DATA) = 0x01;
-//		delay_ms(500);
-//		*(uint32_t *)(GPIOA_BASE_ADDR + GPIO_DATA) = 0x00;
-//		delay_ms(500);
-		
+		}	
 	}
-
 }
