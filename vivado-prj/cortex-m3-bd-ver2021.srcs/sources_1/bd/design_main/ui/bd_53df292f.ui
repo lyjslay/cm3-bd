@@ -1,0 +1,25 @@
+{
+   "ActiveEmotionalView":"Default View",
+   "Default View_ScaleFactor":"1.46235",
+   "Default View_TopLeft":"-170,-107",
+   "ExpandedHierarchyInLayout":"",
+   "guistr":"# # String gsaved with Nlview 7.0r6  2020-01-29 bk=1.5227 VDI=41 GEI=36 GUI=JA:10.0 non-TLS
+#  -string -flagsOSRD
+preplace port port-id_aclk -pg 1 -lvl 0 -x -10 -y 70 -defaultsOSRD
+preplace port port-id_periph_rstn -pg 1 -lvl 0 -x -10 -y 160 -defaultsOSRD
+preplace port port-id_interconnect_rstn -pg 1 -lvl 0 -x -10 -y 90 -defaultsOSRD
+preplace port s_axi3_itcm -pg 1 -lvl 0 -x -10 -y 50 -defaultsOSRD
+preplace inst axi_bram_itcm_ctrl -pg 1 -lvl 2 -x 460 -y 90 -defaultsOSRD
+preplace inst axi3to4_protocol_convert -pg 1 -lvl 1 -x 160 -y 70 -defaultsOSRD
+preplace inst blk_itcm -pg 1 -lvl 3 -x 740 -y 90 -defaultsOSRD
+preplace netloc sys_mmcm_sys_clk 1 0 2 10 150 310J
+preplace netloc sys_reset_peripheral_aresetn 1 0 2 NJ 160 320J
+preplace netloc sys_reset_interconnect_aresetn 1 0 1 NJ 90
+preplace netloc axi_protocol_convert_0_M_AXI 1 1 1 N 70
+preplace netloc axi_bram_itcm_ctrl_BRAM_PORTA 1 2 1 N 90
+preplace netloc CORTEXM3_AXI_0_CM3_CODE_AXI3 1 0 1 NJ 50
+levelinfo -pg 1 -10 160 460 740 880
+pagesize -pg 1 -db -bbox -sgen -170 -10 880 180
+"
+}
+
